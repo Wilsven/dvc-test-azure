@@ -1,0 +1,4 @@
+['remote "all_contents"']
+    url = azure://raw/all_contents
+['remote "google_analytics"']
+    url = azure://raw/google_analytics
