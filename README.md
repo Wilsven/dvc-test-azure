@@ -42,3 +42,8 @@
 
 1. `git checkout <...>`
 2. `dvc checkout`
+3. `git switch main`
+4. `dvc add <DATA_PATH>`
+5. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
+6. Stage and commit changes to revert raw data version
+7. `git push`
