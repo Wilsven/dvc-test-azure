@@ -1,7 +1,25 @@
 #!/bin/bash
 
+# Perform operations in the root directory using a subshell
+(
+    # Navigate to the root of the project
+    cd "$(git rev-parse --show-toplevel)" || exit
+
+    # Define the config file path relative to the root
+    CONFIG_FILE_PATH=".dvc/config.local"
+
+    # Attempt to remove the config file
+    if [ -f "$CONFIG_FILE_PATH" ]; then
+        echo "Removing config.local."
+        rm "$CONFIG_FILE_PATH"
+    else
+        echo "config.local not found, continuing."
+    fi
+)
+
 # Path to the .env file
 ENV_FILE=".env"
+
 # Check if the .env file exists and add a newline if it's missing
 if [ -f "$ENV_FILE" ]; then
     [ -n "$(tail -c1 "$ENV_FILE")" ] && echo >> "$ENV_FILE"
@@ -20,6 +38,7 @@ while IFS='=' read -r key value; do
     # Trim any surrounding whitespace (useful for some environments)
     key=$(echo "$key" | xargs)
     value=$(echo "$value" | xargs)
+
     # Export the variable
     export "$key"="$value"
 

@@ -1,6 +1,6 @@
 # DVC with Azure Blob Storage
 
-## Steps (SAS Token)
+## 1. Generate SAS Token
 
 1. Create an **Azure Storage Account**
 2. Click on **+ Container** > Enter a name for your container > **Create**
@@ -9,41 +9,95 @@
 5. Under **Permissions** > Check **Read**, **Write**, **Delete** and **List**
 6. Under **Start** and **Expiry** > Set the date and time
 7. Under **Allowed protocols** > Select **HTTPS only**
-8. Generate **SAS token and URL** > Copy the **SAS token**
+8. **Generate SAS token and URL** > Copy the **SAS token**
+9. Paste the SAS token into the `.env` file
 
-**Note:** Experiment with other forms of authentication https://dvc.org/doc/user-guide/data-management/remote-storage/azure-blob-storage
+```
+AZURE_URL="azure://<CONTAINER>"
+AZURE_STORAGE_ACCOUNT="<STORAGE_ACCOUNT>"
+AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
+```
 
-**Important:** Less reading, more doing
+> [!IMPORTANT]  
+> Do note down the start and expiry of the SAS token as it is not stored anywhere in Azure.
+>
+> ```
+> Start: 10/10/2024 10:15:48 AM (UTC +08:00)
+> Expiry: 10/10/2024 6:15:48 PM (UTC +08:00)
+> ```
 
-## Steps (DVC)
+## 2. Set Up Data Version Control (DVC) (Manually)
 
 1. `dvc init`
+
 2. `dvc remote add <REMOTE_NAME> <REMOTE_PATH>`
+
 3. `dvc remote modify --local <REMOTE_NAME> account_name <STORAGE_ACCOUNT>`
+
 4. `dvc remote modify --local <REMOTE_NAME> sas_token <SAS_TOKEN>`
-5. Repeat for all other raw data
+
+> [!NOTE]
+> Here, `<REMOTE_NAME>` is an alias and `<REMOTE_PATH>` is the path pointing to the directory in your remote storage.
+>
+> The commands above are ran with a `--local` flag to ensure that credentials or senstive information are not versioned controled.
+
+5. Repeat steps 2-4 for all other raw data
+
 6. `dvc add <DATA_PATH>`
+
+> [!NOTE]
+> You should see a `.dvc` file being generated. This is the file that should be versioned controled to GitHub so we know which version of raw data is being used.
+
 7. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
-   - You should see a `.dvc` file being generated
-8. Commit the `.dvc` files to version control (i.e. GitHub)
+
+> [!NOTE]
+> Here, `<DATA_PATH>` is the path pointing to your raw data.
+
+8. Commit the `.dvc` files to version control
+
    - `git commit -am "Add raw data"`
+
    - `git push`
-9. Delete all raw data from local
-10. Run `dvc pull`
-    - All raw data should be downloaded from remote to local
 
-## Steps (Update to raw data)
+### 2.1 Validate
 
-1. `dvc add <DATA_PATH>`
-2. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
-3. Commit code changes that resulted in raw data changes
+10. Delete all raw data from local
 
-## Steps (Revert to previous version)
+11. `dvc pull` and all raw data should be downloaded from your remote into your local
 
-1. `git checkout <...>`
-2. `dvc checkout`
-3. `git switch main`
-4. `dvc add <DATA_PATH>`
-5. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
-6. Stage and commit changes to revert raw data version
-7. `git push`
+## 3. Update Raw Data
+
+1. Run the cells in [`notebooks/data_transformation.ipynb`](notebooks/data_transformation.ipynb)
+
+2. `dvc add <DATA_PATH>`
+
+3. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
+
+4. Commit code changes that resulted in raw data changes
+
+   - `git commit -am "Update raw data"`
+
+   - `git push`
+
+## 4. Revert Raw Data
+
+1. `git log` to check for the commit ID of the raw data version you want to revert to
+
+> [!TIP]
+> This is where best practices in clear commit messages will help.
+
+2. `git checkout <COMMIT_ID>`
+
+3. `dvc checkout`
+
+4. `git switch main`
+
+5. `dvc add <DATA_PATH>`
+
+6. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
+
+7. Commit changes to revert raw data version
+
+   - `git commit -am "Revert raw data"`
+
+   - `git push`
