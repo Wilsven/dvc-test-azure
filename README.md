@@ -78,7 +78,7 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 3. `dvc checkout`
 4. `git switch main`
 5. `dvc add <DATA_PATH>`
-6. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
+6. ~~`dvc push <DATA_PATH> --remote <REMOTE_NAME>`~~ Not required because previous version is already in remote storage.
 7. Commit changes to revert raw data version
    - `git commit -am "Revert raw data"`
    - `git push`
