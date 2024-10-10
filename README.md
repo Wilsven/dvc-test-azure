@@ -29,11 +29,8 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 ## 2. Set Up Data Version Control (DVC) (Manually)
 
 1. `dvc init`
-
 2. `dvc remote add <REMOTE_NAME> <REMOTE_PATH>`
-
 3. `dvc remote modify --local <REMOTE_NAME> account_name <STORAGE_ACCOUNT>`
-
 4. `dvc remote modify --local <REMOTE_NAME> sas_token <SAS_TOKEN>`
 
 > [!NOTE]
@@ -42,7 +39,6 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 > The commands above are ran with a `--local` flag to ensure that credentials or senstive information are not versioned controled.
 
 5. Repeat steps 2-4 for all other raw data
-
 6. `dvc add <DATA_PATH>`
 
 > [!NOTE]
@@ -54,29 +50,21 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 > Here, `<DATA_PATH>` is the path pointing to your raw data.
 
 8. Commit the `.dvc` files to version control
-
    - `git commit -am "Add raw data"`
-
    - `git push`
 
 ### 2.1 Validate
 
-10. Delete all raw data from local
-
-11. `dvc pull` and all raw data should be downloaded from your remote into your local
+1. Delete all raw data from local
+2. `dvc pull` and all raw data should be downloaded from your remote into your local
 
 ## 3. Update Raw Data
 
 1. Run the cells in [`notebooks/data_transformation.ipynb`](notebooks/data_transformation.ipynb)
-
 2. `dvc add <DATA_PATH>`
-
 3. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
-
 4. Commit code changes that resulted in raw data changes
-
    - `git commit -am "Update raw data"`
-
    - `git push`
 
 ## 4. Revert Raw Data
@@ -87,17 +75,10 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 > This is where best practices in clear commit messages will help.
 
 2. `git checkout <COMMIT_ID>`
-
 3. `dvc checkout`
-
 4. `git switch main`
-
 5. `dvc add <DATA_PATH>`
-
 6. `dvc push <DATA_PATH> --remote <REMOTE_NAME>`
-
 7. Commit changes to revert raw data version
-
    - `git commit -am "Revert raw data"`
-
    - `git push`
