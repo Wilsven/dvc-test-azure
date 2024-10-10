@@ -82,3 +82,11 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 7. Commit changes to revert raw data version
    - `git commit -am "Revert raw data"`
    - `git push`
+
+---
+
+## (Bonus) Set Up Data Version Control (DVC) (Recommended)
+
+1. `dvc init`
+2. `./scripts/setup_dvc.sh`
+3. `./scripts/get_raw_data.sh`
