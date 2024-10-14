@@ -22,8 +22,8 @@ AZURE_STORAGE_SAS_TOKEN="<SAS_TOKEN>"
 > Do note down the start and expiry of the SAS token as it is not stored anywhere in Azure.
 >
 > ```
-> Start: 10/10/2024 10:15:48 AM (UTC +08:00)
-> Expiry: 10/10/2024 6:15:48 PM (UTC +08:00)
+> Start: 14/10/2024 3:31:09 PM(UTC +08:00)
+> Expiry: 10/10/2024 3:31:09 PM (UTC +08:00)
 > ```
 
 ## 2. Set Up Data Version Control (DVC) (Manually)
