@@ -1,8 +1,8 @@
 ['remote "all_contents"']
-    url = azure://raw/all_contents
+    url = azure://raw-demo/all_contents
 ['remote "google_analytics"']
-    url = azure://raw/google_analytics
+    url = azure://raw-demo/google_analytics
 ['remote "missing_contents"']
-    url = azure://raw/missing_contents
+    url = azure://raw-demo/missing_contents
 ['remote "ground_truth"']
-    url = azure://raw/ground_truth
+    url = azure://raw-demo/ground_truth
